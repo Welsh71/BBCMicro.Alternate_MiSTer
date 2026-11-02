@@ -167,6 +167,7 @@ parameter CONF_STR = {
 	"OB,Swap Joysticks,No,Yes;",
 	"-;",
 	"R0,Reset;",
+	"t7,Reset, Clear RAM & SW RAM;",
 	"JA,Fire;",
 	"I,Compressed UEF could not be decompressed,No UEF header - playing as raw bitstream,UEF tape ready,Tape ejected,Not a drive sounds file (sounds.rom);",
 	"V,PSMain-",`BUILD_DATE
@@ -310,7 +311,20 @@ hps_io #(.CONF_STR(CONF_STR),.VDNUM(3),.BLKSZ(2)) hps_io // IES Updated from c24
 
 /////////////////  RESET  /////////////////////////
 
-wire reset = RESET | status[0] | buttons[1] | (status[AUTO_START_OPT] & img_mounted);
+// "Reset, Clear RAM & SW RAM" (status 39) holds the machine in reset while ram_clear
+// zeroes the whole RAM array (see ram_clear.v), the same on Model B and Master.
+wire       ram_clr_busy;
+wire [17:0] ram_clr_addr;
+
+ram_clear ram_clear
+(
+	.clk(clk_sys),
+	.start(status[39]),
+	.busy(ram_clr_busy),
+	.addr(ram_clr_addr)
+);
+
+wire reset = RESET | status[0] | status[39] | ram_clr_busy | buttons[1] | (status[AUTO_START_OPT] & img_mounted);
 
 ////////////////  MEMORY  /////////////////////////
 
@@ -469,9 +483,9 @@ reg        ram_we_r;
 reg [17:0] ram_waddr_r;
 reg  [7:0] ram_wdata_r;
 always @(posedge clk_sys) begin
-	ram_we_r    <= mem_addr[18] & old_we & ~mem_we_n;
-	ram_waddr_r <= ram_index(mem_addr[17:0]);
-	ram_wdata_r <= mem_din;
+	ram_we_r    <= ram_clr_busy | (mem_addr[18] & old_we & ~mem_we_n);
+	ram_waddr_r <= ram_clr_busy ? ram_clr_addr : ram_index(mem_addr[17:0]);
+	ram_wdata_r <= ram_clr_busy ? 8'd0 : mem_din;
 end
 
 // Read address registered for the same reason as the ROM (see rom_addr_r).

@@ -14,6 +14,7 @@ This continues [sharpie7/BeebFpga_MiSTer](https://github.com/sharpie7/BeebFpga_M
 - **Cassette tape loading** from `.UEF` files (plain or gzip-compressed) via the OSD, with a real MC6850 ACIA and Serial ULA emulation and cassette demodulator. Includes rewind, eject, tape sound (Low / Medium / Loud / Off) and an option to take tape input from the I/O board's ADC instead of a file. See [Cassette Tape](#cassette-tape).
 - **Video timing accuracy fixes** ported from hoglet67's 2022 BeebFPGA work (6845, SAA5050, 6522, video ULA and clock slots), fixing split-screen games such as Elite and Revs.
 - **Floppy disc improvements**: Write Track is now handled properly, so `*FORM` works; the drive activity LED is driven; and there is an optional on-screen disc status display (OSD: *Disk Status* Off / On / On Activity).
+- **Reset, Clear RAM & SW RAM** (OSD, below *Reset*): resets the machine and zeroes all of its RAM, including sideways RAM slots 4-7, as if it had been powered off and on. Use it to get rid of a corrupt or unwanted sideways RAM image without reloading the core. Works the same on the Model B and Master 128. The ordinary *Reset* still keeps sideways RAM, so loaded ROM images survive it.
 - Timing-closure work across the design for a more reliable 96 MHz build.
 
 This core supports the original features of the MiSTer core:
