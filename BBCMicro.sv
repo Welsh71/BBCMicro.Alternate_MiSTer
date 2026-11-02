@@ -167,7 +167,7 @@ parameter CONF_STR = {
 	"OB,Swap Joysticks,No,Yes;",
 	"-;",
 	"R0,Reset;",
-	"t7,Reset, Clear RAM & SW RAM;",
+	"t7,Reset - Clear Memory and SW RAM;",
 	"JA,Fire;",
 	"I,Compressed UEF could not be decompressed,No UEF header - playing as raw bitstream,UEF tape ready,Tape ejected,Not a drive sounds file (sounds.rom);",
 	"V,PSMain-",`BUILD_DATE
@@ -311,7 +311,7 @@ hps_io #(.CONF_STR(CONF_STR),.VDNUM(3),.BLKSZ(2)) hps_io // IES Updated from c24
 
 /////////////////  RESET  /////////////////////////
 
-// "Reset, Clear RAM & SW RAM" (status 39) holds the machine in reset while ram_clear
+// "Reset - Clear Memory and SW RAM" (status 39) holds the machine in reset while ram_clear
 // zeroes the whole RAM array (see ram_clear.v), the same on Model B and Master.
 wire       ram_clr_busy;
 wire [17:0] ram_clr_addr;
