@@ -1,4 +1,4 @@
-// RAM clear sequencer for "Reset - Clear Memory and SW RAM" (OSD).
+// RAM clear sequencer for "Reset-Mem & SW RAM clear" (OSD).
 //
 // On a rising edge of start, busy goes high and the sequencer steps addr from 0 to
 // WORDS-1, one word per clock, while BBCMicro.sv holds the machine in reset and feeds
