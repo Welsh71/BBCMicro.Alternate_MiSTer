@@ -158,6 +158,11 @@ module drive_sound #(
     reg         busy, wait_d, fin;
     reg  signed [17:0] acc;     // drive voices (2-6)
     reg  signed [17:0] acc_r;   // relay clicks (0-1)
+    // Next position and wrap for voice v, worked out when its read is issued so the
+    // v-indexed add/compare is off the completion path. kill: voice v was restarted
+    // while its read was outstanding, so the completion leaves pos alone.
+    reg  [16:0] pos_nx;
+    reg         wrap, kill;
 
     wire signed [8:0] s = $signed({1'b0, mem_data}) - 9'sd128;
     // drive voices follow the level setting; relay clicks are fixed at medium
@@ -190,11 +195,10 @@ module drive_sound #(
                     wait_d <= 1'b0;
                     if (v < 3'd2) acc_r <= acc_r + s_scaled;
                     else          acc   <= acc + s_scaled;
-                    if (pos[v] + 17'd1 >= len[v]) begin
-                        pos[v] <= 17'd0;
-                        if (!loop[v]) on[v] <= 1'b0;
-                    end else
-                        pos[v] <= pos[v] + 17'd1;
+                    if (!kill) begin
+                        pos[v] <= wrap ? 17'd0 : pos_nx;
+                        if (wrap && !loop[v]) on[v] <= 1'b0;
+                    end
                     if (v == 3'd6) fin <= 1'b1;
                     else v <= v + 3'd1;
                 end
@@ -202,6 +206,9 @@ module drive_sound #(
                 mem_rd   <= 1'b1;
                 mem_addr <= off[v] + pos[v];
                 wait_d   <= 1'b1;
+                pos_nx   <= pos[v] + 17'd1;
+                wrap     <= (pos[v] + 17'd1 >= len[v]);
+                kill     <= 1'b0;
             end else begin
                 if (v == 3'd6) fin <= 1'b1;
                 else v <= v + 3'd1;
@@ -214,6 +221,7 @@ module drive_sound #(
                     on[i]   <= 1'b1;
                     pos[i]  <= 17'd0;
                     loop[i] <= (i == 2) || (i == 5);
+                    if (busy && i == v) kill <= 1'b1;   // restarted after its read was issued
                 end
             end
         end

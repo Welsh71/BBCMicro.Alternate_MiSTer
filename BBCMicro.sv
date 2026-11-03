@@ -672,9 +672,14 @@ bbc_micro_core BBCMicro(
 
 // Tape input from the I/O board's audio-in (ADC), squared with hysteresis.
 // Play a tape, or a tape-image WAV, into it and type *TAPE / CHAIN"".
+// The ADC's reset is registered: the wide combinational reset (several status bits,
+// img_mounted, ram_clr_busy) fanned out across the ADC's counters failed setup at 96 MHz.
+reg adc_reset;
+always @(posedge clk_sys) adc_reset <= reset;
+
 ltc2308_tape #(.CLK_RATE(96000000)) ltc2308_tape
 (
-	.reset(reset),
+	.reset(adc_reset),
 	.clk(clk_sys),
 	.ADC_BUS(ADC_BUS),
 	.dout(tape_adc),
