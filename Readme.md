@@ -46,7 +46,9 @@ Most users will just want the main version described here.
 
 Download the latest `BBCMicro.Alternate._YYYYMMDD.rbf` from the [`releases/`](releases) folder or the [Releases page](https://github.com/Welsh71/Welsh71BeebFpga_MiSTer/releases) and copy it to the `_Computer` or `_Computer/_Alternative` folder on the root of the MiSTer primary SD card. You can then select the file from the MiSTer boot menu or set to autoboot by editing the `bootcore` in `MiSTer.ini`.
 
-The file is named `BBCMicro.Alternate._...` so it is easy to tell apart from the official BBC Micro core (`BBCMicro_YYYYMMDD.rbf`), which `update_all` installs and updates. The two can sit side by side, and `update_all` will not replace or remove this one. Both cores use the same `games/BBCMicro` folder for disc and tape images.
+The file is named `BBCMicro.Alternate._...` so it is easy to tell apart from the official BBC Micro core (`BBCMicro_YYYYMMDD.rbf`), which `update_all` installs and updates. The two can sit side by side, and `update_all` will not replace or remove this one. The two cores also keep separate settings and folders: this core names everything after `BBCMicro.Alternate` (its saved settings are `config/BBCMicro.Alternate.CFG`, plus `.f2`, `_gamma.cfg` and similar files beside it), so it never reads or overwrites the official core's `config/BBCMicro.*` files. Disc and tape images for this core go in `games/BBCMicro.Alternate`; create that folder and copy (or move) your images into it.
+
+**Upgrading from a build before this change:** older builds of this core used the name `BBCMicro`, shared with the official core. Your settings start from defaults the first time, and the drive sounds file needs loading once from the menu. If you only ever used this core, you can keep your old settings by renaming `config/BBCMicro.CFG` to `config/BBCMicro.Alternate.CFG` (don't do this if the official core wrote that file: its settings layout is different).
 
 ### ICE (In Circuit Emulator) Version
 
@@ -87,7 +89,7 @@ MMFSv1 uses files in “MMB” format. This was a format originally developed fo
 
 The BBC core offers two ways to mount the MMB file. If you have a secondary SD card then format as FAT32 or FAT16. Copy the MMB file as “BEEB.MMB” on to the card. The core will automatically pick up that card. In this mode the file can be both read and written.
 
-The alternative copy the MMB file to the “games/BBC Micro” directory on the main SD Card. If it is renamed “boot.vhd” then it will be automatically loaded. If not then you can manually load it from the MiSTer menu. In this mode the file is **read only**. To unmount a previously mounted MMB/VHD (e.g. to go back to the secondary card) press backspace when picking the file.
+The alternative copy the MMB file to the `games/BBCMicro.Alternate` directory on the main SD Card. If it is renamed “boot.vhd” then it will be automatically loaded. If not then you can manually load it from the MiSTer menu. In this mode the file is **read only**. To unmount a previously mounted MMB/VHD (e.g. to go back to the secondary card) press backspace when picking the file.
 
 ```
 Some useful MMFS Commands:
@@ -125,7 +127,7 @@ If you have both active then for the Master 128 you can choose which to have as 
 
 The core emulates the BBC's cassette interface (MC6850 ACIA at &FE08 and the Serial ULA at &FE10), so the normal tape filing system in MOS works.
 
-1. Put your `.uef` files in the `games/BBCMicro` folder on the MiSTer SD card. Compressed (gzipped) UEFs work too.
+1. Put your `.uef` files in the `games/BBCMicro.Alternate` folder on the MiSTer SD card. Compressed (gzipped) UEFs work too.
 2. In the OSD choose **Load Tape** and pick a file. The menu confirms when the tape is ready.
 3. On the BBC type `*TAPE` (needed if a disc filing system is active), then `CHAIN""` or `*RUN`, as you would on a real machine. The tape runs whenever the motor relay is on.
 
@@ -139,7 +141,7 @@ Other options:
 
 The core can play the sounds of a real disc drive while it works: the motor, the head loading and unloading, single steps and longer seeks. They are recordings from [BeebEm](https://github.com/stardot/beebem-windows), packed into one file, `sounds.rom`. The sounds are only heard; disc timing is exactly the same with them on or off.
 
-1. Download [`sounds.rom`](releases/sounds.rom) from the `releases/` folder and copy it to `games/BBCMicro` on the MiSTer SD card.
+1. Download [`sounds.rom`](releases/sounds.rom) from the `releases/` folder and copy it to `games/BBCMicro.Alternate` on the MiSTer SD card.
 2. In the OSD choose **Load Drive Sounds** and pick `sounds.rom`. You only need to do this once: MiSTer reloads it every time the core starts.
 3. Set **Drive Sounds** to Low, Medium or Loud (it is Off by default). Use the MiSTer menu's *Save Settings* to keep your choice.
 

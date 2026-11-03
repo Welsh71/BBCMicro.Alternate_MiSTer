@@ -134,7 +134,10 @@ parameter M128_SHADOW_OPT = 29;
 parameter M128_FS_OPT = 30;
 
 parameter CONF_STR = {
-	"BBCMicro;;",
+	// Core name: Main_MiSTer names this core's config/ files (.CFG, .fN, .sN, _gamma.cfg,
+	// _scaler.cfg, _shmask.cfg, inputs) and its games/ and saves/ folders after it. It is
+	// not "BBCMicro" so nothing clashes with the official BBC Micro core.
+	"BBCMicro.Alternate;;",
 	"-;",
 	"h4o24,Filesystem,DFS 1.2 only,DFS 1770 only,MMFSv1,MMFSv2,MMFSv1 & DFS 1.2,MMFSv1 & DFS 1770,MMFSv2 & DFS 1.2,MMFSv2 & DFS 1770;",
 	"h2OPR,Filesystem,MMFSv1,MMFSv2,DFS,MMFSv1&DFS,MMFSv2&DFS;",
