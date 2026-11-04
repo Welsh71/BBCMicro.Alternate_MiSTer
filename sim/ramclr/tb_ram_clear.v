@@ -1,5 +1,5 @@
-// Testbench for rtl/ram_clear.v and the RAM write-port mux in BBCMicro.sv.
-// The write port below is a copy of BBCMicro.sv's (ram_we_r/ram_waddr_r/ram_wdata_r);
+// Testbench for rtl/ram_clear.v and the RAM write-port mux in BBCMicro_Alternate.sv.
+// The write port below is a copy of BBCMicro_Alternate.sv's (ram_we_r/ram_waddr_r/ram_wdata_r);
 // keep the two in step.
 `timescale 1ns/1ps
 

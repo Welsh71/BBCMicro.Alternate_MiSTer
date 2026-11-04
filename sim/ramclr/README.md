@@ -1,7 +1,7 @@
 # RAM clear testbench
 
 `tb_ram_clear.v` tests `rtl/ram_clear.v` together with a copy of the RAM write-port
-mux from `BBCMicro.sv` (keep the two in step), over the full 12 x 16K RAM array:
+mux from `BBCMicro_Alternate.sv` (keep the two in step), over the full 12 x 16K RAM array:
 
 - busy lasts exactly 196,608 clocks (about 2 ms at 96 MHz) and reset is held throughout
 - every byte reads back zero afterwards: co-processor RAM, sideways RAM slots 4-7,

@@ -4,14 +4,20 @@ Notes for Claude Code working in this repository. Read this before changing anyt
 
 ## The project
 
-- An enhanced BBC Micro Model B / Master 128 core for MiSTer (DE10-Nano), maintained by
-  Paul Stewart (GitHub **Welsh71**). Repo: https://github.com/Welsh71/Welsh71BeebFpga_MiSTer
+- **BBCMicro.Alternate**: an enhanced BBC Micro Model B / Master 128 core for MiSTer (DE10-Nano),
+  maintained by Paul Stewart (GitHub **Welsh71**). Repo: https://github.com/Welsh71/BBCMicro.Alternate_MiSTer
+  (renamed from `Welsh71BeebFpga_MiSTer` in Nov 2026; GitHub redirects the old URL).
+- Naming, used everywhere: core/OSD name and `games/`/`config/`/`saves/` folder `BBCMicro.Alternate`;
+  release file `BBCMicro.Alternate._YYYYMMDD.rbf`; OSD version line `Alternate-YYMMDD`; Quartus
+  project/revision and top file `BBCMicro_Alternate` (`.qpf/.qsf/.sv/.sdc/.srf`; no dot, Quartus
+  doesn't like dots in project names). The `emu|BBCMicro|...` paths in the SDC are the core's
+  *instance* name inside `emu`, not the project name; leave them.
 - It continues sharpie7/BeebFpga_MiSTer (inactive since 2022; no PRs go there), which put
   hoglet67's BeebFPGA emulation on the official core's harness. The official core
   (MiSTer-devel/BBCMicro_MiSTer) is a separate project and is left alone.
 - Hardware: DE10-Nano with SDRAM board, I/O board (secondary SD card, ADC used for tape input).
 - PC: Windows 10, **Quartus Prime 17.0.2 Lite**. MiSTer cores must be built with 17.0.x.
-  Working copy: `C:\fpga\BeebFpga_MiSTer_2026`. Test images (`.uef`, `.ssd`, `.dsd`) are in `C:\fpga`.
+  Working copy: `C:\fpga\BeebFpga_MiSTer_2026` (to be renamed `C:\fpga\BBCMicro.Alternate_MiSTer`). Test images (`.uef`, `.ssd`, `.dsd`) are in `C:\fpga`.
 
 ## Branches and releases
 
@@ -23,35 +29,41 @@ Notes for Claude Code working in this repository. Read this before changing anyt
   - `alt-config-names` (on top of `swram-clear`): core name `BBCMicro.Alternate`, plus timing fixes.
   - **Branch new work from the newest of these**, not from `main`.
 - `old-main` and `PSMain` are history. Never push `old-main`.
-- Release file name: `BBCMicro.Alternate._YYYYMMDD.rbf` (rename `output_files\BBCMicro.rbf`).
+- Release file name: `BBCMicro.Alternate._YYYYMMDD.rbf` (rename `output_files\BBCMicro_Alternate.rbf`).
   For each release, Claude prepares the renamed `.rbf`, release notes and a pre-filled
   "new release" link, and commits the same `.rbf` to `releases/` (check checksums match).
   **Paul creates the tags and GitHub releases himself.**
 - Commit identity: `Welsh71 <101995724+Welsh71@users.noreply.github.com>` (already set as the
   repo-level git config). Never use a personal email address.
-- `BBCMicro.qsf` has a deliberate uncommitted local change (`SMART_RECOMPILE OFF`). Don't commit it
+- `BBCMicro_Alternate.qsf` has a deliberate uncommitted local change (`SMART_RECOMPILE OFF`). Don't commit it
   and don't revert it.
 
 ## Building and checking timing
 
 1. Clean build after any framework, constraint or placement-sensitive change: run `clean.bat`,
-   then `quartus_sh --flow compile BBCMicro` (Quartus 17.0 `bin64` must be on PATH;
+   then `quartus_sh --flow compile BBCMicro_Alternate` (Quartus 17.0 `bin64` must be on PATH;
    `scripts/report_failing_paths.bat` shows the usual install locations). A build takes a while.
 2. Timing report: run `quartus_sta -t scripts\report_failing_paths.tcl` directly (the `.bat`
    ends with `pause`, which would hang a non-interactive run). It runs single-threaded on
    purpose: multi-threaded quartus_sta crashes on Quartus 17.
 3. Check, and compare with the last good build:
    - `output_files\fail_hold.txt` and `fail_setup_summary.txt` should say "Nothing to report".
-   - `BBCMicro.sta.summary`: setup and hold slack for the emu PLL (clk_sys, 96 MHz) and pll_hdmi.
+   - `BBCMicro_Alternate.sta.summary`: setup and hold slack for the emu PLL (clk_sys, 96 MHz) and pll_hdmi.
    - `fail_setup_worst15.txt` for the worst paths.
-   - M10K blocks and LABs in `BBCMicro.fit.rpt` (block RAM is nearly full: about 545/553 M10K).
-   - Count "Ignored filter" in `BBCMicro.sta.rpt`: should be 0. An SDC line that matches nothing
+   - M10K blocks and LABs in `BBCMicro_Alternate.fit.rpt` (block RAM is nearly full: about 545/553 M10K).
+   - Count "Ignored filter" in `BBCMicro_Alternate.sta.rpt`: should be 0. An SDC line that matches nothing
      silently does nothing.
    A compile that "succeeds" with negative slack is a failed build. Even a trivial source change can
    move placement and expose a marginal path, so check every build.
-4. Last good build: `swram-clear` on 2 Nov 2026, core setup +0.370 ns, hold +0.432 ns,
-   HDMI +0.390/+0.195 ns, 545 M10K, 3,199 LABs. The first `alt-config-names` build (3 Nov) failed
-   at -0.687 ns; commit 70cddf5 fixes it but hasn't been built yet.
+4. Last good build: `alt-config-names`, project renamed to `BBCMicro_Alternate`, 4 Nov 2026:
+   core setup +0.659 ns, hold +0.426 ns, HDMI +0.450/+0.216 ns, 545 M10K, 3,244 LABs. Worst core
+   paths: `ext_nWE -> ram_we_r` and the framework's `ascal` (sys/, not ours to edit).
+   Before that: 72f7f8a (drive-sound SDC exceptions) +0.629 ns; `swram-clear` (2 Nov) +0.370 ns;
+   70cddf5 alone +0.203 ns.
+5. If the compile flow's own TimeQuest step crashes ("Fatal Error: Access Violation"), the `.rbf`
+   is already written by the Assembler. Kill the hung `quartus_sta`/`quartus_sh` and rerun
+   `quartus_sta --parallel=1 BBCMicro_Alternate -c BBCMicro_Alternate` to regenerate the
+   `.sta.summary`/`.sta.rpt`, then the report script.
 
 ## Timing lessons from this core
 
@@ -67,7 +79,9 @@ Notes for Claude Code working in this repository. Read this before changing anyt
 
 - **Never edit `sys/`.** Replace it wholesale from Template_MiSTer when updating the framework.
 - Add new source files to `files.qip`, not through the Quartus IDE.
-- `Readme.md` and `files.qip` use **CRLF**; RTL files use LF. Preserve line endings when editing.
+- `Readme.md` and `files.qip` use **CRLF** (files.qip has one stray LF line, `rtl/rtc_chip.v`);
+  RTL files use LF. Preserve line endings when editing. Git Bash's `sed -i` silently converts
+  CRLF files to LF, so edit them with the Edit tool or Python in binary mode.
 - CONF_STR (OSD menu) text: never use a comma inside a menu label (a comma ends the field), and keep
   labels short (about 24 characters).
 - Status bits in use: 0, 2-16, 21-22, 25-30, 32-39. Bit 39 is the RAM-clear trigger.

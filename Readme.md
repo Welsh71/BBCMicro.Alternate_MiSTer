@@ -1,10 +1,10 @@
-# BeebFpga_MiSTer
+# BBCMicro.Alternate_MiSTer
 
 A BBC Micro Model B / Master 128 core for [MiSTer](https://github.com/MiSTer-devel), maintained by Paul Stewart ([Welsh71](https://github.com/Welsh71)).
 
 This continues [sharpie7/BeebFpga_MiSTer](https://github.com/sharpie7/BeebFpga_MiSTer), which brought the [BeebFPGA](https://github.com/hoglet67/BeebFpga) emulation by David Banks ([hoglet67](https://github.com/hoglet67)) and others onto the harness of the [official MiSTer core](https://github.com/MiSTer-devel/BBCMicro_MiSTer). That project has not been updated since 2022, so new work and releases now happen here. All credit for the original port and emulation goes to those authors.
 
-**Downloads:** the current core is **`BBCMicro.Alternate._YYYYMMDD.rbf`** (newest date) in the [`releases/`](releases) folder, and it is also attached to each version on the [Releases page](https://github.com/Welsh71/Welsh71BeebFpga_MiSTer/releases). The older `BBCMicro_2022....rbf` and `BBCMicro_ICE_2022....rbf` files in `releases/` are sharpie7's original 2022 builds, kept for reference only.
+**Downloads:** the current core is **`BBCMicro.Alternate._YYYYMMDD.rbf`** (newest date) in the [`releases/`](releases) folder, and it is also attached to each version on the [Releases page](https://github.com/Welsh71/BBCMicro.Alternate_MiSTer/releases). The older `BBCMicro_2022....rbf` and `BBCMicro_ICE_2022....rbf` files in `releases/` are sharpie7's original 2022 builds, kept for reference only.
 
 ## What's new in this version
 
@@ -44,7 +44,7 @@ This core also supports the following additional features:
 
 Most users will just want the main version described here.
 
-Download the latest `BBCMicro.Alternate._YYYYMMDD.rbf` from the [`releases/`](releases) folder or the [Releases page](https://github.com/Welsh71/Welsh71BeebFpga_MiSTer/releases) and copy it to the `_Computer` or `_Computer/_Alternative` folder on the root of the MiSTer primary SD card. You can then select the file from the MiSTer boot menu or set to autoboot by editing the `bootcore` in `MiSTer.ini`.
+Download the latest `BBCMicro.Alternate._YYYYMMDD.rbf` from the [`releases/`](releases) folder or the [Releases page](https://github.com/Welsh71/BBCMicro.Alternate_MiSTer/releases) and copy it to the `_Computer` or `_Computer/_Alternative` folder on the root of the MiSTer primary SD card. You can then select the file from the MiSTer boot menu or set to autoboot by editing the `bootcore` in `MiSTer.ini`.
 
 The file is named `BBCMicro.Alternate._...` so it is easy to tell apart from the official BBC Micro core (`BBCMicro_YYYYMMDD.rbf`), which `update_all` installs and updates. The two can sit side by side, and `update_all` will not replace or remove this one. The two cores also keep separate settings and folders: this core names everything after `BBCMicro.Alternate` (its saved settings are `config/BBCMicro.Alternate.CFG`, plus `.f2`, `_gamma.cfg` and similar files beside it), so it never reads or overwrites the official core's `config/BBCMicro.*` files. Disc and tape images for this core go in `games/BBCMicro.Alternate`; create that folder and copy (or move) your images into it.
 
@@ -249,5 +249,5 @@ There is also a check for the presence of the FC1770 in the Acorn BBC B DFS ROM 
 
 Saving the CMOS for the Master 128 would be nice, but it seems that MiSTer only offers its simple option to write files if you use the NVRAM tag in an MRA file which I want to avoid as it makes the install messy.
 
-There are some notes in the code on how to move between the normal version and the ICE version in the code. Note it requires modifying parameter in two files: BBCMicro.sv and bbc_micro_core.vhd.
+There are some notes in the code on how to move between the normal version and the ICE version in the code. Note it requires modifying parameter in two files: BBCMicro_Alternate.sv and bbc_micro_core.vhd.
 

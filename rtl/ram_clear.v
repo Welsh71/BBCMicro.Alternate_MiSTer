@@ -1,7 +1,7 @@
 // RAM clear sequencer for "Reset-Mem & SW RAM clear" (OSD).
 //
 // On a rising edge of start, busy goes high and the sequencer steps addr from 0 to
-// WORDS-1, one word per clock, while BBCMicro.sv holds the machine in reset and feeds
+// WORDS-1, one word per clock, while BBCMicro_Alternate.sv holds the machine in reset and feeds
 // addr/zero into the main block RAM write port. With WORDS = 196608 (12 x 16K) that
 // covers co-processor RAM (banks 0-3), sideways RAM slots 4-7 (banks 4-7), main memory
 // (banks 8-9) and the Master's filing system/private/shadow RAM, which also holds the

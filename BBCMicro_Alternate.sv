@@ -1,5 +1,5 @@
 //============================================================================
-//  BBCMicro port to MiSTer
+//  BBCMicro.Alternate: BBC Micro Model B / Master 128 core for MiSTer
 //  Copyright (C) 2018-2019 Sorgelig
 //  Copyright (C) 2022 Iain Sharp
 //
@@ -173,7 +173,7 @@ parameter CONF_STR = {
 	"t7,Reset-Mem & SW RAM clear;",
 	"JA,Fire;",
 	"I,Compressed UEF could not be decompressed,No UEF header - playing as raw bitstream,UEF tape ready,Tape ejected,Not a drive sounds file (sounds.rom);",
-	"V,PSMain-",`BUILD_DATE
+	"V,Alternate-",`BUILD_DATE
 };
 
 wire model_master = status[4];
@@ -918,7 +918,7 @@ video_mixer #(640, 1, 0) mixer
 // Mode 0 - 6: Always set VGA_F1 to 0 even when interlaced - therefore and with ~clk_sel
 // Mode 7: When using progressive output then set VGA_F1 to 0, when using interlace output set VGA_F1 based on the interlace field
 // Registered in clk_sys: odd_field/clk_sel come from the gated clk_48 domain and
-// changes once per field (2-cycle multicycle in BBCMicro.sdc).
+// changes once per field (2-cycle multicycle in BBCMicro_Alternate.sdc).
 reg vga_f1_r;
 always @(posedge clk_sys) vga_f1_r <= (~clk_sel) & status[M7_VIDEO_OPT] & ~ odd_field;
 assign VGA_F1 = vga_f1_r;

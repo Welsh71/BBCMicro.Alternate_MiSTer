@@ -2,7 +2,7 @@
 # Run from the project folder:  quartus_sta -t scripts/report_failing_paths.tcl
 # (or double-click scripts\report_failing_paths.bat). No recompile needed.
 
-project_open BBCMicro -revision BBCMicro
+project_open BBCMicro_Alternate -revision BBCMicro_Alternate
 # Single-threaded: Quartus 17's parallel keeper matching can crash on this design.
 # Set in memory only - project_close below does not write it back to the .qsf.
 set_global_assignment -name NUM_PARALLEL_PROCESSORS 1
