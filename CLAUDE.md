@@ -21,13 +21,13 @@ Notes for Claude Code working in this repository. Read this before changing anyt
 
 ## Branches and releases
 
-- `main` = the released code (currently v20261030, drive sounds). Keep it equal to the
-  latest release so its Readme matches the released `.rbf`.
+- `main` = the released code (currently v20261104: RAM clear, core name `BBCMicro.Alternate`,
+  Mode 7 default, timing fixes). Keep it equal to the latest release so its Readme matches the
+  released `.rbf`.
 - Unreleased work stacks on branches and is released together, because Paul doesn't want to
-  push too many releases on users:
-  - `swram-clear`: OSD "Reset-Mem & SW RAM clear" (status 39, `rtl/ram_clear.v`). Tested on hardware.
-  - `alt-config-names` (on top of `swram-clear`): core name `BBCMicro.Alternate`, plus timing fixes.
-  - **Branch new work from the newest of these**, not from `main`.
+  push too many releases on users. No unreleased branches at the moment: `swram-clear` and
+  `alt-config-names` are fully released in v20261104. Start the next batch on a new branch
+  from `main`, then branch further work from the newest unreleased branch, not from `main`.
 - `old-main` and `PSMain` are history. Never push `old-main`.
 - Release file name: `BBCMicro.Alternate._YYYYMMDD.rbf` (rename `output_files\BBCMicro_Alternate.rbf`).
   For each release, Claude prepares the renamed `.rbf`, release notes and a pre-filled
