@@ -16,6 +16,7 @@ This continues [sharpie7/BeebFpga_MiSTer](https://github.com/sharpie7/BeebFpga_M
 - **Floppy disc improvements**: Write Track is now handled properly, so `*FORM` works; the drive activity LED is driven; and there is an optional on-screen disc status display (OSD: *Disk Status* Off / On / On Activity).
 - **Reset** (OSD): a power-on reset, as if the Beeb had been switched off and on, but without clearing any RAM. The MOS does a cold start (BASIC programs and workspace are lost), all the chips are reset, and a change of model or Model B disc controller in the menu takes effect. On the Master, the CMOS filing system, screen mode/TV and boot settings are set again from the menu. Sideways RAM keeps its contents, so loaded ROM images survive, and mounted discs and the loaded tape (at its current position) stay in place. Pressing BREAK is a lighter warm reset that keeps your program.
 - **Reset-Mem & SW RAM clear** (OSD, below *Reset*): resets the machine and zeroes all of its RAM, including sideways RAM slots 4-7, as if it had been powered off and on. Use it to get rid of a corrupt or unwanted sideways RAM image without reloading the core. Works the same on the Model B and Master 128. The ordinary *Reset* still keeps sideways RAM, so loaded ROM images survive it.
+- **Starts in Mode 7** by default, as a real BBC Micro does. *Default video mode* in the OSD lists 7 first; any other mode can still be chosen.
 - Timing-closure work across the design for a more reliable 96 MHz build.
 
 This core supports the original features of the MiSTer core:

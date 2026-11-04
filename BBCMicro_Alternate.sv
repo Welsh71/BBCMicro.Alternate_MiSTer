@@ -93,7 +93,7 @@ video_freak video_freak
 // 02-03   - Scandouble settings
 // 04 ( 4) - BBC B or Master
 // 05-06   - Co processor
-// 07-09   - Default video mode
+// 07-09   - Default video mode (menu order 7,0,1,...,6 so the default, 0, is Mode 7)
 // A (10) - Mouse as Joystick
 // B (11) - Swap joysticks
 // C (12) - Autostart
@@ -157,7 +157,7 @@ parameter CONF_STR = {
 	"-;",
 	"O4,Model,B(MOS6502),Master(R65SC12);",
 	"O56,Co-Processor,None,MOS65C02;",
-	"O79,Default video mode,0,1,2,3,4,5,6,7;",
+	"O79,Default video mode,7,0,1,2,3,4,5,6;",
 	"h2OT,Default video mem.,Shadow,Main;",
 	"h3OU,Default Filesystem,MMFS,DFS;",
 	"-;",
@@ -545,6 +545,9 @@ wire [7:0] joyb_y = 8'hFF - {~joy2_y[7],joy2_y[6:0]};
 
 wire       ce_pix;
 
+// OSD "Default video mode" lists 7,0,1,...,6: entry 0 (the default) is Mode 7.
+wire [2:0] default_mode = (status[9:7] == 3'd0) ? 3'd7 : status[9:7] - 3'd1;
+
 bbc_micro_core BBCMicro(
     .clksys(clk_sys),
 	.clock_32(clk_32),
@@ -593,7 +596,9 @@ bbc_micro_core BBCMicro(
 	
 	.RTC(RTC),
 
-	.keyb_dip({4'b0000, status[AUTO_START_OPT], ~status[9:7]}),
+	// Links/CMOS take the inverted mode number. The menu lists 7,0,1,...,6, so menu
+	// entry n is Mode 7 for n=0 and Mode n-1 otherwise (default 0 = Mode 7, as on a real Beeb).
+	.keyb_dip({4'b0000, status[AUTO_START_OPT], ~default_mode}),
 	
 	// cmos_options stores extra options that would normally be in CMOS on Master 128
 	// Format:

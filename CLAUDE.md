@@ -55,7 +55,11 @@ Notes for Claude Code working in this repository. Read this before changing anyt
      silently does nothing.
    A compile that "succeeds" with negative slack is a failed build. Even a trivial source change can
    move placement and expose a marginal path, so check every build.
-4. Last good build: `alt-config-names`, project renamed to `BBCMicro_Alternate`, 4 Nov 2026:
+4. Last good build: Mode 7 default (OSD lists 7,0..6), 4 Nov 2026: core setup +0.167 ns, hold
+   +0.434 ns, HDMI +0.410/+0.260 ns, 545 M10K. Worst paths are now `ttxt_clken`/`vid_clken ->
+   disk_osd|ce_r` with about -6.5 ns clock skew: watch this one; registering `ce_pix` before
+   `disk_osd` would likely win the margin back.
+   Before that: project renamed to `BBCMicro_Alternate`, 4 Nov 2026:
    core setup +0.659 ns, hold +0.426 ns, HDMI +0.450/+0.216 ns, 545 M10K, 3,244 LABs. Worst core
    paths: `ext_nWE -> ram_we_r` and the framework's `ascal` (sys/, not ours to edit).
    Before that: 72f7f8a (drive-sound SDC exceptions) +0.629 ns; `swram-clear` (2 Nov) +0.370 ns;
