@@ -15,7 +15,8 @@ This continues [sharpie7/BeebFpga_MiSTer](https://github.com/sharpie7/BeebFpga_M
 - **Video timing accuracy fixes** ported from hoglet67's 2022 BeebFPGA work (6845, SAA5050, 6522, video ULA and clock slots), fixing split-screen games such as Elite and Revs.
 - **Floppy disc improvements**: Write Track is now handled properly, so `*FORM` works; the drive activity LED is driven; and there is an optional on-screen disc status display (OSD: *Disk Status* Off / On / On Activity).
 - **Reset** (OSD): a power-on reset, as if the Beeb had been switched off and on, but without clearing any RAM. The MOS does a cold start (BASIC programs and workspace are lost), all the chips are reset, and a change of model or Model B disc controller in the menu takes effect. On the Master, the CMOS filing system, screen mode/TV and boot settings are set again from the menu. Sideways RAM keeps its contents, so loaded ROM images survive, and mounted discs and the loaded tape (at its current position) stay in place. Pressing BREAK is a lighter warm reset that keeps your program.
-- **Reset-Mem & SW RAM clear** (OSD, below *Reset*): resets the machine and zeroes all of its RAM, including sideways RAM slots 4-7, as if it had been powered off and on. Use it to get rid of a corrupt or unwanted sideways RAM image without reloading the core. Works the same on the Model B and Master 128. The ordinary *Reset* still keeps sideways RAM, so loaded ROM images survive it.
+- **Reset-Mem & SW RAM clear** (OSD, below *Reset*): resets the machine and zeroes all of its RAM, including sideways RAM slots 4-7, as if it had been powered off and on. Use it to get rid of a corrupt or unwanted sideways RAM image without reloading the core. Like *Reset*, it closes the OSD. Works the same on the Model B and Master 128. The ordinary *Reset* still keeps sideways RAM, so loaded ROM images survive it.
+- **Its own name, settings and folder**: the core is now called `BBCMicro.Alternate`, so it no longer shares files with the official BBC Micro core. From this version on, disc, tape and MMB images and `sounds.rom` go in **`games/BBCMicro.Alternate`** (not `games/BBCMicro`), and settings are saved as `config/BBCMicro.Alternate.CFG`. See [Main Version](#main-version) for upgrading.
 - **Starts in Mode 7** by default, as a real BBC Micro does. *Default video mode* in the OSD lists 7 first; any other mode can still be chosen.
 - Timing-closure work across the design for a more reliable 96 MHz build.
 
@@ -49,7 +50,7 @@ Download the latest `BBCMicro.Alternate._YYYYMMDD.rbf` from the [`releases/`](re
 
 The file is named `BBCMicro.Alternate._...` so it is easy to tell apart from the official BBC Micro core (`BBCMicro_YYYYMMDD.rbf`), which `update_all` installs and updates. The two can sit side by side, and `update_all` will not replace or remove this one. The two cores also keep separate settings and folders: this core names everything after `BBCMicro.Alternate` (its saved settings are `config/BBCMicro.Alternate.CFG`, plus `.f2`, `_gamma.cfg` and similar files beside it), so it never reads or overwrites the official core's `config/BBCMicro.*` files. Disc and tape images for this core go in `games/BBCMicro.Alternate`; create that folder and copy (or move) your images into it.
 
-**Upgrading from a build before this change:** older builds of this core used the name `BBCMicro`, shared with the official core. Your settings start from defaults the first time, and the drive sounds file needs loading once from the menu. If you only ever used this core, you can keep your old settings by renaming `config/BBCMicro.CFG` to `config/BBCMicro.Alternate.CFG` (don't do this if the official core wrote that file: its settings layout is different).
+**Upgrading from a build before this change:** older builds of this core used the name `BBCMicro`, shared with the official core, and looked for images in `games/BBCMicro`. This version looks in `games/BBCMicro.Alternate` instead: create that folder and copy (or move) your `.ssd`, `.dsd`, `.uef`, MMB/`boot.vhd` files and `sounds.rom` into it. Leave `games/BBCMicro` in place if you also use the official core. Your settings start from defaults the first time, and the drive sounds file needs loading once from the menu. If you only ever used this core, you can keep your old settings by renaming `config/BBCMicro.CFG` to `config/BBCMicro.Alternate.CFG` (don't do this if the official core wrote that file: its settings layout is different).
 
 ### ICE (In Circuit Emulator) Version
 
@@ -103,11 +104,11 @@ For a handy MMB file with a good selection of BBC games try the "BEEB.MMB File v
 
 ### MMFS v2
 
-An alternative filing system of [MMFS v2](https://github.com/hoglet67/MMFS) may be selected from the MiSTer menu. In MMFSv2 you can access SSD disk files on a FAT 32 formatted SD card in the secondary slot. Alternatively, you can pick an a file which is disk image (IMG) on the primary SD card and read SSD files from that.
+An alternative filing system of [MMFS v2](https://github.com/hoglet67/MMFS) may be selected from the MiSTer menu. In MMFSv2 you can access SSD disk files on a FAT 32 formatted SD card in the secondary slot. Alternatively, you can pick a disk image (IMG) file from `games/BBCMicro.Alternate` on the primary SD card and read SSD files from that.
 
 ### Acorn DFS
 
-In DFS mode you can mount individual SSD and DSD files from the primary SD Card. The Model B can use either of Acorn's two disc systems:
+In DFS mode you can mount individual SSD and DSD files from `games/BBCMicro.Alternate` on the primary SD Card. The Model B can use either of Acorn's two disc systems:
 
 - **DFS 1.2** (Model B default): Acorn DFS 1.20 with an emulated Intel 8271 controller, the original BBC Micro disc system. This is the best choice for older software, especially games that drive the disc controller directly and fail with a 1770.
 - **DFS 1770**: Acorn DFS 2.26 with an emulated WD1770 controller, as on the later 1770 upgrade boards.
