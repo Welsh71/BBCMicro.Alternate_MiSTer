@@ -112,7 +112,7 @@ video_freak video_freak
 // N (23)- Eject tape (trigger)
 // o0-o1 (32-33) - On-screen disk status: Off / On / On activity
 // o5-o6 (37-38) - Drive sounds: Off / Low / Medium / Loud (default Off)
-// o7 (39)       - Tape relay click: Off / On (default Off)
+// o7 (39)       - Reset-Mem & SW RAM clear (trigger; "r" closes the OSD like Reset)
 // File index 1 - UEF tape image
 // File index 2 - sounds.rom (drive and relay samples from BeebEm), reloaded at every core start
 //
@@ -170,7 +170,7 @@ parameter CONF_STR = {
 	"OB,Swap Joysticks,No,Yes;",
 	"-;",
 	"R0,Reset;",
-	"t7,Reset-Mem & SW RAM clear;",
+	"r7,Reset-Mem & SW RAM clear;",
 	"JA,Fire;",
 	"I,Compressed UEF could not be decompressed,No UEF header - playing as raw bitstream,UEF tape ready,Tape ejected,Not a drive sounds file (sounds.rom);",
 	"V,Alternate-",`BUILD_DATE
