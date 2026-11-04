@@ -79,3 +79,12 @@ set_multicycle_path -to [get_keepers {emu|core_l_q* emu|core_r_q*}] -hold 1
 # every other clk_sys edge, and the data is latched at the end of a 12-clk memory slot.
 set_multicycle_path -from [get_keepers {emu|rom_addr_r*}] -setup 2
 set_multicycle_path -from [get_keepers {emu|rom_addr_r*}] -hold 1
+
+# Drive sounds: slow floppy/tape signals (gated clk_48) into clk_sys two-flop
+# synchronisers (ds_*_s[0]), as for the tape player's motor_s[0] above.
+set_false_path -to [get_keepers {emu|ds_motor_s[0] emu|ds_step_s[0] emu|ds_seek_s[0] emu|ds_relay_s[0]}]
+# seek_n changes on the same clk_48 edge as seek_tog, and drive_sound only uses it once
+# the toggle has passed two more clk_sys flops, so two cycles is the true requirement.
+# (ds_seek_n* also matches the copies Quartus makes, e.g. ~_Duplicate_1)
+set_multicycle_path -to [get_keepers {emu|ds_seek_n*}] -setup 2
+set_multicycle_path -to [get_keepers {emu|ds_seek_n*}] -hold 1
