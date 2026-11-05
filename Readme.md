@@ -18,6 +18,8 @@ This continues [sharpie7/BeebFpga_MiSTer](https://github.com/sharpie7/BeebFpga_M
 - **Reset-Mem & SW RAM clear** (OSD, below *Reset*): resets the machine and zeroes all of its RAM, including sideways RAM slots 4-7, as if it had been powered off and on. Use it to get rid of a corrupt or unwanted sideways RAM image without reloading the core. Like *Reset*, it closes the OSD. Works the same on the Model B and Master 128. The ordinary *Reset* still keeps sideways RAM, so loaded ROM images survive it.
 - **Its own name, settings and folder**: the core is now called `BBCMicro.Alternate`, so it no longer shares files with the official BBC Micro core. From this version on, disc, tape and MMB images and `sounds.rom` go in **`games/BBCMicro.Alternate`** (not `games/BBCMicro`), and settings are saved as `config/BBCMicro.Alternate.CFG`. See [Main Version](#main-version) for upgrading.
 - **Starts in Mode 7** by default, as a real BBC Micro does. *Default video mode* in the OSD lists 7 first; any other mode can still be chosen.
+- **Mode 7 at 576i looks right on HDMI again**: with *M7 Analogue Video* set to `576i`, teletext text looked jagged on HDMI because the two interlaced fields were shown in the wrong order. It now looks the same as `576p`.
+- **Automatic updates**: add this core's database to `downloader.ini` and `update` / `update_all` install and update it for you (see *Installing and Using*).
 - Timing-closure work across the design for a more reliable 96 MHz build.
 
 This core supports the original features of the MiSTer core:

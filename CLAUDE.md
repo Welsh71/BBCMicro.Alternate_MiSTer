@@ -21,16 +21,17 @@ Notes for Claude Code working in this repository. Read this before changing anyt
 
 ## Branches and releases
 
-- `main` = the released code (currently v20261104: RAM clear, core name `BBCMicro.Alternate`,
-  Mode 7 default, timing fixes). Keep it equal to the latest release so its Readme matches the
+- `main` = the released code (currently v20261105: Mode 7 576i HDMI field-order fix, CRT note,
+  update database; v20261104 before it: RAM clear, core name `BBCMicro.Alternate`, Mode 7
+  default, timing fixes). Keep it equal to the latest release so its Readme matches the
   released `.rbf`.
 - Unreleased work stacks on branches and is released together, because Paul doesn't want to
-  push too many releases on users. `swram-clear` and `alt-config-names` are fully released
-  in v20261104. Unreleased:
-  - `m7-576i-field` (from `main`): Mode 7 with *M7 Analogue Video* = 576i looked jagged on
-    HDMI because `VGA_F1` had the wrong field polarity after the hoglet67 6845 port; now
-    `VGA_F1` follows `odd_field`. Tested on hardware (HDMI) 5 Nov 2026: smooth, same as 576p.
-  - **Branch new work from the newest unreleased branch**, not from `main`.
+  push too many releases on users. No unreleased branches at the moment: `swram-clear`,
+  `alt-config-names` and `m7-576i-field` are all released. Start the next batch on a new branch
+  from `main`, then branch further work from the newest unreleased branch, not from `main`.
+- Background on `m7-576i-field`: Mode 7 with *M7 Analogue Video* = 576i looked jagged on HDMI
+  because `VGA_F1` had the wrong field polarity after the hoglet67 6845 port; now `VGA_F1`
+  follows `odd_field`. Tested on hardware (HDMI) 5 Nov 2026: smooth, same as 576p.
 - `old-main` and `PSMain` are history. Never push `old-main`.
 - Release file name: `BBCMicro.Alternate._YYYYMMDD.rbf` (rename `output_files\BBCMicro_Alternate.rbf`).
   For each release, Claude prepares the renamed `.rbf`, release notes and a pre-filled
