@@ -219,9 +219,11 @@ Aside: Back in the day I did have a Music 500 (essentially the same hardware as 
 
 The core supports analogue video out on the VGA connector of the MiSTer expansion board, though the signals are not necessarily VGA compatible. If you are using HDMI output leave everything as default. If you want analogue output that is "like a real BBC" set `M7 Analogue Video` to `576i` in the menu. For more details see below. 
 
+**Using a CRT or a 15 kHz TV?** Set `M7 Analogue Video` to `576i` first. The core starts up in Mode 7, and the default `576p` is a 31 kHz signal that a 15 kHz display can't sync to, so with `576p` you'll get no picture at power-on or on any Mode 7 screen (including MMFS and disc menus) even though the machine is running. Modes 0-6 are 15 kHz either way.
+
 In Modes 0-6 the default analogue video from the core is interlaced 50Hz standard definition TV. This is not compatible with standard VGA, but can work with 16k monitors and with TVs using a suitable VGA-SCART cable and the right settings in `MiSTer.ini`. Interlace can be turned off using `*TV 0,1` followed by changing the Mode on the BBC Micro.
 
-In Mode 7 the default analogue video from the core is 576p. This works well with the MiSTer HDMI scaler, but the analogue output isn't compatible with the other modes. In the menu you can set `M7 Analogue Video` to `576i` which is what a BBC Micro would output. This is similar to the interlaced outputs from other modes, and should work with the same displays, but doesn't display nicely on the HDMI output.
+In Mode 7 the default analogue video from the core is 576p. This works well with the MiSTer HDMI scaler, but the analogue output isn't compatible with the other modes. In the menu you can set `M7 Analogue Video` to `576i` which is what a BBC Micro would output. This is similar to the interlaced outputs from other modes, and should work with the same displays. On HDMI, `576i` and `576p` look the same.
 
 As it was back in the day, interlaced video will judder a little on some displays. Welcome to the past!
 
