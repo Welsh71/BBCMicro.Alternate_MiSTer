@@ -48,6 +48,15 @@ Most users will just want the main version described here.
 
 Download the latest `BBCMicro.Alternate._YYYYMMDD.rbf` from the [`releases/`](releases) folder or the [Releases page](https://github.com/Welsh71/BBCMicro.Alternate_MiSTer/releases) and copy it to the `_Computer` or `_Computer/_Alternative` folder on the root of the MiSTer primary SD card. You can then select the file from the MiSTer boot menu or set to autoboot by editing the `bootcore` in `MiSTer.ini`.
 
+**Automatic updates (recommended):** instead of copying the file by hand, add this core's database to your MiSTer, and `update` / `update_all` will install it and keep it up to date. It also installs `sounds.rom` for the drive sounds. Download [downloader_Welsh71_BBCMicro.Alternate_DB.zip](https://raw.githubusercontent.com/Welsh71/BBCMicro.Alternate_DB/db/downloader_Welsh71_BBCMicro.Alternate_DB.zip), extract the `.ini` file and copy it to the root of the SD card next to `downloader.ini`, or add these two lines to the end of `downloader.ini`:
+
+```ini
+[Welsh71/BBCMicro.Alternate_DB]
+db_url = https://raw.githubusercontent.com/Welsh71/BBCMicro.Alternate_DB/db/db.json.zip
+```
+
+Then run `update` or `update_all`. The core is installed to `_Computer`; if you copied an earlier version there (or to `_Computer/_Alternative`) by hand, delete that copy so it isn't listed twice. See [BBCMicro.Alternate_DB](https://github.com/Welsh71/BBCMicro.Alternate_DB) for details.
+
 The file is named `BBCMicro.Alternate._...` so it is easy to tell apart from the official BBC Micro core (`BBCMicro_YYYYMMDD.rbf`), which `update_all` installs and updates. The two can sit side by side, and `update_all` will not replace or remove this one. The two cores also keep separate settings and folders: this core names everything after `BBCMicro.Alternate` (its saved settings are `config/BBCMicro.Alternate.CFG`, plus `.f2`, `_gamma.cfg` and similar files beside it), so it never reads or overwrites the official core's `config/BBCMicro.*` files. Disc and tape images for this core go in `games/BBCMicro.Alternate`; create that folder and copy (or move) your images into it.
 
 **Upgrading from a build before this change:** older builds of this core used the name `BBCMicro`, shared with the official core, and looked for images in `games/BBCMicro`. This version looks in `games/BBCMicro.Alternate` instead: create that folder and copy (or move) your `.ssd`, `.dsd`, `.uef`, MMB/`boot.vhd` files and `sounds.rom` into it. Leave `games/BBCMicro` in place if you also use the official core. Your settings start from defaults the first time, and the drive sounds file needs loading once from the menu. If you only ever used this core, you can keep your old settings by renaming `config/BBCMicro.CFG` to `config/BBCMicro.Alternate.CFG` (don't do this if the official core wrote that file: its settings layout is different).

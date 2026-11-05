@@ -35,6 +35,12 @@ Notes for Claude Code working in this repository. Read this before changing anyt
 - Release file name: `BBCMicro.Alternate._YYYYMMDD.rbf` (rename `output_files\BBCMicro_Alternate.rbf`).
   For each release, Claude prepares the renamed `.rbf`, release notes and a pre-filled
   "new release" link, and commits the same `.rbf` to `releases/` (check checksums match).
+  **Update database:** the same `.rbf` also goes in the MiSTer Downloader database repo
+  https://github.com/Welsh71/BBCMicro.Alternate_DB (local clone `C:\fpga\BBCMicro.Alternate_DB`):
+  replace the file in `_Computer/` (`git rm` the old date, add the new one; only ever one `.rbf`
+  there), push `main` (with Paul's OK), then check the Action regenerated `db.json.zip` on the
+  `db` branch with the new file's size/MD5. `games/BBCMicro.Alternate/sounds.rom` is also
+  served from there. Users add it via `downloader.ini` (see Readme).
   **Paul creates the tags and GitHub releases himself.**
 - Commit identity: `Welsh71 <101995724+Welsh71@users.noreply.github.com>` (already set as the
   repo-level git config). Never use a personal email address.
